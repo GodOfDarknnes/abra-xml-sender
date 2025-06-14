@@ -29,9 +29,10 @@ export function parseAbrasfXml(xmlString: string): AbrasfResult | null {
       getText("//*[local-name()='ValorDeducoes']") ||
       "";
 
+    // TROCA AQUI: Busca Aliquota ao invés de ValorIss
     const valorIss =
-      getText("//*[local-name()='InfNfse']/*[local-name()='Servico']/*[local-name()='Valores']/*[local-name()='ValorIss']") ||
-      getText("//*[local-name()='ValorIss']") ||
+      getText("//*[local-name()='InfNfse']/*[local-name()='Servico']/*[local-name()='Valores']/*[local-name()='Aliquota']") ||
+      getText("//*[local-name()='Aliquota']") ||
       "";
 
     const tomador =
@@ -55,3 +56,4 @@ export function parseAbrasfXml(xmlString: string): AbrasfResult | null {
     return null;
   }
 }
+
