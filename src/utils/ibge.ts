@@ -18,8 +18,9 @@ export async function getMunicipioNomeUf(codigo: string): Promise<string> {
     const data: MunicipioIBGE[] = await res.json();
     // API retorna array com 1 elemento ou erro
     if (Array.isArray(data) && data.length > 0) {
-      const { nome, microrregiao } = data[0];
-      const uf = microrregiao.mesorregiao.UF.sigla;
+      const municipio = data[0];
+      const nome = municipio.nome;
+      const uf = municipio.microrregiao.mesorregiao.UF.sigla;
       return `${nome}/${uf}`;
     }
     return "";
