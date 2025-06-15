@@ -1,9 +1,11 @@
 
+
 export interface AbrasfResult {
   codigoMunicipio: string;
   deducao: string;
   valorIss: string;
   tomador: string;
+  numero: string;
 }
 
 export function parseAbrasfXml(xmlString: string): AbrasfResult | null {
@@ -41,6 +43,11 @@ export function parseAbrasfXml(xmlString: string): AbrasfResult | null {
       getText("//*[local-name()='RazaoSocial']") ||
       "";
 
+    const numero =
+      getText("//*[local-name()='InfNfse']/*[local-name()='Numero']") ||
+      getText("//*[local-name()='Numero']") ||
+      "";
+
     if (!codigoMunicipio || !valorIss || !tomador) {
       // Campos obrigatórios
       return null;
@@ -51,6 +58,7 @@ export function parseAbrasfXml(xmlString: string): AbrasfResult | null {
       deducao: deducao ? deducao.trim() : "",
       valorIss: valorIss.trim(),
       tomador: tomador.trim(),
+      numero: numero.trim(),
     };
   } catch {
     return null;

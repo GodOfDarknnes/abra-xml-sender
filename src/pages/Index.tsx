@@ -16,6 +16,7 @@ interface Extrato {
     deducao: string;
     valor_iss: string;
     tomador: string;
+    numero: string;
     erro?: string;
   };
 }
@@ -44,7 +45,7 @@ const Index = () => {
         if (!ext) {
           extratos.push({
             fileName: file.name,
-            extract: { municipio: "", deducao: "", valor_iss: "", tomador: "", erro: "Erro ao ler campos do XML" },
+            extract: { municipio: "", deducao: "", valor_iss: "", tomador: "", numero: "", erro: "Erro ao ler campos do XML" },
           });
           continue;
         }
@@ -56,11 +57,12 @@ const Index = () => {
             deducao: ext.deducao || "",
             valor_iss: ext.valorIss,
             tomador: ext.tomador,
+            numero: ext.numero,
             erro: municipio ? undefined : "Município IBGE não encontrado!",
           },
         });
       } catch (err) {
-        extratos.push({ fileName: file.name, extract: { municipio: "", deducao: "", valor_iss: "", tomador: "", erro: "Falha ao processar arquivo" } });
+        extratos.push({ fileName: file.name, extract: { municipio: "", deducao: "", valor_iss: "", tomador: "", numero: "", erro: "Falha ao processar arquivo" } });
       }
     }
 
@@ -83,6 +85,7 @@ const Index = () => {
           deducao: extract.deducao ?? "",
           valor_iss: extract.valor_iss,
           tomador: extract.tomador,
+          numero: extract.numero,
         };
 
         const resp = await fetch(webhookUrl, {
@@ -166,6 +169,7 @@ const Index = () => {
                   <span className="text-destructive text-sm">{extract.erro}</span>
                 ) : (
                   <ul className="grid gap-1 text-sm">
+                    <li><span className="font-medium">Número:</span> {extract.numero || <i>(vazio)</i>}</li>
                     <li><span className="font-medium">Município:</span> {extract.municipio}</li>
                     <li><span className="font-medium">Dedução:</span> {extract.deducao || <i>(vazio)</i>}</li>
                     <li><span className="font-medium">Valor ISS:</span> {extract.valor_iss}</li>
